@@ -1,0 +1,6 @@
+[submodule "devstage-ui"]
+	path = devstage-ui
+	url = https://github.com/MateusFS99/devstage-ui.git
+[submodule "devstage-api"]
+	path = devstage-api
+	url = https://github.com/MateusFS99/devstage-api.git
