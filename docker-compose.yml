@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./devstage-api
+      dockerfile: Dockerfile
+    container_name: devstage-api
+    restart: always
+    environment:
+      - SPRING_APPLICATION_NAME=devstage-api
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/db_events
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=mysql
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./devstage-ui
+      dockerfile: Dockerfile
+    container_name: devstage-ui
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.4
+    container_name: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=db_events
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
